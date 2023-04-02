@@ -7,6 +7,22 @@ import { clerkClient, type User } from "@clerk/nextjs/api";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
+import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
+import { Redis } from "@upstash/redis";
+
+// Create limit of 3 requests per mitune
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, "1 m"),
+  analytics: true,
+  /**
+   * Optional prefix for the keys used in redis. This is useful if you want to share a redis
+   * instance with other applications and want to avoid key collisions. The default prefix is
+   * "@upstash/ratelimit"
+   */
+  prefix: "@upstash/ratelimit",
+});
+
 const filterUserForClient = (user: User) => {
   return {
     id: user.id,
@@ -52,14 +68,23 @@ export const postsRouter = createTRPCRouter({
   create: privateProcedure
     .input(
       z.object({
-        content: z.string().emoji().min(1).max(280),
+        content: z.string().emoji("Only emojis are allowed").min(1).max(280),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const authorId = ctx.auth.userId;
+      const authorIds = ctx.auth.userId;
+
+      const { success } = await ratelimit.limit(authorIds);
+      if (!success) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Rate limit exceeded",
+        });
+      }
+
       const post = await ctx.prisma.post.create({
         data: {
-          authorId,
+          authorId: authorIds,
           content: input.content,
         },
       });

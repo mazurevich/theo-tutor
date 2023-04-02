@@ -41,7 +41,7 @@ const Feed = () => {
   const { data, isLoading: isPostsLoading } = api.posts.getAll.useQuery();
 
   if (isPostsLoading) {
-    return <Loader size={40} />;
+    return <LoadingPage size={40} />;
   }
 
   if (!data) {

@@ -1,8 +1,9 @@
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { api } from "@/utils/api";
-import { FormEvent, useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import React, { type FormEvent, useRef } from "react";
+import toast from "react-hot-toast";
+import { Loader } from "@/components/loader";
 
 export const CreatePostWizard = () => {
   const { user } = useUser();
@@ -16,6 +17,11 @@ export const CreatePostWizard = () => {
         inputRef.current.value = "";
       }
       await ctx.posts.getAll.invalidate();
+    },
+    onError: (error) => {
+      debugger;
+      const errorMessages = error?.data?.zodError?.fieldErrors.content?.[0];
+      toast.error(errorMessages || "Something went wrong");
     },
   });
 
@@ -35,7 +41,7 @@ export const CreatePostWizard = () => {
   }
 
   return (
-    <div className="w-ful flex grow gap-3">
+    <div className="w-ful relative flex grow items-center gap-3">
       <Image
         className="h-14 w-14 rounded-full"
         src={user.profileImageUrl}
@@ -43,15 +49,16 @@ export const CreatePostWizard = () => {
         width={56}
         height={56}
       />
-      <form onSubmit={handleCreatePost}>
+      <form onSubmit={handleCreatePost} className="flex grow">
         <input
           disabled={isPosting}
           ref={inputRef}
           type="text"
           placeholder="Type some emoji here..."
-          className="ml-1 grow bg-transparent px-2 py-4"
+          className="ml-1 grow bg-transparent px-2 py-4 disabled:text-gray-400"
         />
       </form>
+      {isPosting && <Loader className="" size={30} />}
     </div>
   );
 };
