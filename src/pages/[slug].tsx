@@ -1,18 +1,13 @@
 import Head from "next/head";
-import { type GetStaticProps, type NextPage } from "next";
-import superjson from "superjson";
-import { createProxySSGHelpers } from "@trpc/react-query/ssg";
-import { type SignedOutAuthObject } from "@clerk/backend";
-
-import { api } from "@/utils/api";
-import { appRouter } from "@/server/api/root";
-import { prisma } from "@/server/db";
-import { Layout } from "@/components/layout";
-import Image from "next/image";
 import { type FC } from "react";
+import { type GetStaticProps, type NextPage } from "next";
+import Image from "next/image";
+import { api } from "@/utils/api";
+import { Layout } from "@/components/layout";
 import { LoadingPage } from "@/components/loading-page";
 import { PostsList } from "@/components/posts-list";
 import { type PostWithUser } from "@/types";
+import { generateSSGHelper } from "@/server/helpers/ssg-helper";
 
 const PICK_SIZE = 128;
 
@@ -42,7 +37,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   if (!data) {
     return <div>404 User not found</div>;
   }
-  const { profileImageUrl, username: _username, email } = data;
+  const { profileImageUrl, username: _username } = data;
   return (
     <>
       <Head>
@@ -68,12 +63,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = createProxySSGHelpers({
-    router: appRouter,
-    ctx: { prisma, auth: {} as SignedOutAuthObject },
-    transformer: superjson, // optional - adds superjson serialization
-  });
-
+  const ssg = generateSSGHelper();
   const slug = context.params?.slug;
 
   if (typeof slug !== "string") {
