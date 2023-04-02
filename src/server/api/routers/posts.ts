@@ -3,15 +3,16 @@ import {
   privateProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { clerkClient, type User } from "@clerk/nextjs/api";
+import { clerkClient } from "@clerk/nextjs/api";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
+import { filterUserForClient } from "@/server/helpers/utils";
 
-// Create limit of 3 requests per mitune
-const ratelimit = new Ratelimit({
+// Create limit of 3 requests per minute
+const rateLimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(3, "1 m"),
   analytics: true,
@@ -22,15 +23,6 @@ const ratelimit = new Ratelimit({
    */
   prefix: "@upstash/ratelimit",
 });
-
-const filterUserForClient = (user: User) => {
-  return {
-    id: user.id,
-    username: user.username,
-    profileImageUrl: user.profileImageUrl,
-    email: user.emailAddresses[0]?.emailAddress,
-  };
-};
 
 export const postsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -74,7 +66,7 @@ export const postsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const authorIds = ctx.auth.userId;
 
-      const { success } = await ratelimit.limit(authorIds);
+      const { success } = await rateLimit.limit(authorIds);
       if (!success) {
         throw new TRPCError({
           code: "TOO_MANY_REQUESTS",
