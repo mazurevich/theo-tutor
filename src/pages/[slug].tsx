@@ -9,8 +9,30 @@ import { appRouter } from "@/server/api/root";
 import { prisma } from "@/server/db";
 import { Layout } from "@/components/layout";
 import Image from "next/image";
+import { type FC } from "react";
+import { LoadingPage } from "@/components/loading-page";
+import { PostsList } from "@/components/posts-list";
+import { type PostWithUser } from "@/types";
 
 const PICK_SIZE = 128;
+
+type UsersFeedProps = {
+  userData: PostWithUser["author"];
+};
+const UserFeed: FC<UsersFeedProps> = ({ userData }) => {
+  const { data, isLoading } = api.posts.getPostsByUser.useQuery({
+    userId: userData.id,
+  });
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+  if (!data) {
+    return <div>{`This user didn't post anything`}</div>;
+  }
+
+  return <PostsList posts={data} />;
+};
 
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   const { data } = api.profile.getUserByUsername.useQuery({
@@ -39,6 +61,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
         <div className="h-16" />
         <div className="p-6 text-2xl font-bold">@{_username}</div>
         <div className="border-b border-slate-400 "> </div>
+        <UserFeed userData={data} />
       </Layout>
     </>
   );

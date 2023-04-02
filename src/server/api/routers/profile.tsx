@@ -11,7 +11,7 @@ export const profileRouter = createTRPCRouter({
       const [user] = await clerkClient.users.getUserList({
         username: [input.username],
       });
-      if (!user) {
+      if (!user || !user.username) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "User not found",
