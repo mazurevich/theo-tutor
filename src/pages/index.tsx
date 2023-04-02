@@ -3,10 +3,11 @@ import Head from "next/head";
 
 import { api, type RouterOutputs } from "@/utils/api";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import { CreatePostWizard } from "@/components";
+import { CreatePostWizard, Loader } from "@/components";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
+import { LoadingPage } from "@/components/loading-page";
 
 dayjs.extend(relativeTime);
 
@@ -28,25 +29,40 @@ const PostView = (props: PostWithUser) => {
           <span>{`@${author.username}`}</span>
           <span>&nbsp;{` · ${dayjs(post.createdAt).fromNow()}`}</span>
         </div>
-        <span className="h-full grow align-middle">{post.content}</span>
+        <span className="h-full grow align-middle text-2xl">
+          {post.content}
+        </span>
       </div>
     </div>
   );
 };
-const Home: NextPage = () => {
-  const { data, isLoading } = api.posts.getAll.useQuery();
 
-  const userName = useUser();
+const Feed = () => {
+  const { data, isLoading: isPostsLoading } = api.posts.getAll.useQuery();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isPostsLoading) {
+    return <Loader size={40} />;
   }
 
   if (!data) {
     return <div>Not tweets for today</div>;
   }
 
-  console.log(userName.user?.id);
+  return (
+    <div className="flex flex-col ">
+      {data.map(({ post, author }) => {
+        return <PostView key={post.id} post={post} author={author} />;
+      })}
+    </div>
+  );
+};
+
+const Home: NextPage = () => {
+  const { isSignedIn, isLoaded: isUserLoaded } = useUser();
+
+  if (!isUserLoaded) {
+    return <div></div>;
+  }
 
   return (
     <>
@@ -58,14 +74,10 @@ const Home: NextPage = () => {
       <main className="mx-2 flex h-screen justify-center ">
         <div className="h-full w-full border-x border-slate-400 md:max-w-2xl">
           <div className="flex border-b border-slate-400 p-4">
-            {!userName.isSignedIn && <SignInButton />}
-            {userName.isSignedIn && <CreatePostWizard />}
+            {!isSignedIn && <SignInButton />}
+            {isSignedIn && <CreatePostWizard />}
           </div>
-          <div className="flex flex-col ">
-            {data.map(({ post, author }) => {
-              return <PostView key={post.id} post={post} author={author} />;
-            })}
-          </div>
+          <Feed />
         </div>
       </main>
     </>
