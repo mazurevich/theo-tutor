@@ -30,9 +30,15 @@ const UserFeed: FC<UsersFeedProps> = ({ userData }) => {
 };
 
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
-  const { data } = api.profile.getUserByUsername.useQuery({
-    username,
-  });
+  const { data } = api.profile.getUserByUsername.useQuery(
+    {
+      username,
+    },
+    {
+      cacheTime: 60 * 60 * 1000,
+      staleTime: 5 * 60 * 1000,
+    }
+  );
 
   if (!data) {
     return <div>404 User not found</div>;
@@ -64,9 +70,9 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const ssg = generateSSGHelper();
-  const postId = context.params?.postId;
+  const profile = context.params?.profile;
 
-  if (typeof postId !== "string") {
+  if (typeof profile !== "string") {
     return {
       redirect: {
         destination: "/",
@@ -75,7 +81,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   }
 
-  const username = postId.replace("@", "");
+  const username = profile.replace("@", "");
 
   await ssg.profile.getUserByUsername.prefetch({ username });
 
