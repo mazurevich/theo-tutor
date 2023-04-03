@@ -2,11 +2,14 @@ import { type AppType } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { AppProps } from "next/app";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
 import Head from "next/head";
+
+const isProduction = process.env.NODE_ENV === "production";
 
 const MyApp: AppType = ({ Component, pageProps }: AppProps) => {
   return (
@@ -20,6 +23,7 @@ const MyApp: AppType = ({ Component, pageProps }: AppProps) => {
       <ClerkProvider {...pageProps}>
         <Toaster position="bottom-center" />
         <Component {...pageProps} />
+        {!isProduction && <ReactQueryDevtools />}
       </ClerkProvider>
     </>
   );
