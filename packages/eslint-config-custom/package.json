@@ -1,0 +1,17 @@
+{
+  "name": "eslint-config-custom",
+  "files": [
+    "eslint-react.js"
+  ],
+  "main": "eslint-react.js",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^8.37.0",
+    "eslint-config-next": "^13.2.4",
+    "eslint-config-turbo": "^1.8.8",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-config-prettier": "^8.8.0",
+    "prettier-plugin-tailwindcss": "^0.2.6",
+    "eslint-plugin-react": "^7.32.2"
+  }
+}

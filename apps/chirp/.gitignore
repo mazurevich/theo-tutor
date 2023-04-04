@@ -1,0 +1,21 @@
+.eslintcache
+
+next-env.d.ts
+.env
+
+# next.js
+.next/
+/out/
+
+# testing
+/coverage
+
+# database
+/prisma/db.sqlite
+/prisma/db.sqlite-journal
+
+# production
+/build
+
+# typescript
+*.tsbuildinfo

@@ -9,7 +9,7 @@ dayjs.extend(relativeTime);
 export const PostView = (props: PostWithUser) => {
   const { post, author } = props;
   return (
-    <div className="border-stale-400 flex gap-3 border-b py-8 px-4">
+    <div className="border-stale-400 flex gap-3 border-b px-4 py-8">
       <Image
         src={author.profileImageUrl}
         alt="user profile image"

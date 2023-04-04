@@ -19,7 +19,6 @@ export const CreatePostWizard = () => {
       await ctx.posts.getAll.invalidate();
     },
     onError: (error) => {
-      debugger;
       const errorMessages = error?.data?.zodError?.fieldErrors.content?.[0];
       toast.error(errorMessages || "Something went wrong");
     },
