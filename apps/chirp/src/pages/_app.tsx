@@ -1,7 +1,6 @@
-import { type AppType } from "next/app";
+import { type AppType, type AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
-import type { AppProps } from "next/app";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { api } from "@/utils/api";

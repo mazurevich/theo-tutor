@@ -17,16 +17,8 @@
     "dev": "turbo run dev --parallel",
     "start": "turbo run start --parallel",
     "test": "turbo run test",
-    "test:staged": "turbo run test:staged -- ",
-    "test:search": "turbo run test --filter=onehub-search",
-    "start:admin": "turbo run start --filter=admin",
-    "start:onehub": "turbo run start --filter=onehub-2.0",
-    "start:onehub-dev1": "turbo run start-dev1 --filter=onehub-2.0",
-    "start:admin-dev1": "turbo run start-dev1 --filter=admin",
-    "start:search": "turbo run start --filter=onehub-search",
-    "build:admin": "turbo run build --filter=admin",
-    "build:onehub": "turbo run build --filter=onehub-2.0",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint --parallel",
+    "prepare": "husky install",
     "typecheck": "turbo run typecheck --parallel",
     "format": "prettier --write \"**/*.{css,scss,js,jsx,ts,tsx,md}\"",
     "check:deps": "turbo run check:deps --parallel"
@@ -35,10 +27,27 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "lint-staged": {
+    "apps/**/*.{js,ts,jsx,tsx}": [
+      "eslint --fix --cache"
+    ],
+    "packages/**/*.{js,ts,jsx,tsx}": [
+      "eslint --fix --cache"
+    ],
+    "*.{css,scss}": [
+      "stylelint",
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
   "packageManager": "pnpm@8.1.0",
   "dependencies": {
-    "cross-env": "7.0.3",
-    "prettier": "2.6.2",
-    "turbo": "1.8.5"
+    "cross-env": "^7.0.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.7",
+    "turbo": "^1.8.8"
   }
 }
