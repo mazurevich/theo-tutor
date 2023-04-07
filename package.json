@@ -35,7 +35,6 @@
       "eslint --fix --cache"
     ],
     "*.{css,scss}": [
-      "stylelint",
       "prettier --write"
     ],
     "*.json": [
