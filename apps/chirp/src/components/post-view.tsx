@@ -3,6 +3,7 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { type PostWithUser } from "@/types";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Button } from "ui";
 
 dayjs.extend(relativeTime);
 
@@ -31,6 +32,7 @@ export const PostView = (props: PostWithUser) => {
         </div>
         <span className="h-full grow align-middle text-2xl">
           {post.content}
+          <Button />
         </span>
       </div>
     </div>
