@@ -28,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
     "superjson": "1.12.2",
+    "ui": "workspace:*",
     "zod": "^3.21.4"
   },
   "devDependencies": {
