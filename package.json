@@ -29,10 +29,10 @@
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [
-      "eslint --fix --cache"
+      "cross-env FILES=$(git diff --name-only --diff-filter=ACMRT | grep --line-buffered -E '\\.(js|jsx|ts|tsx)$') eslint $FILES --fix"
     ],
     "packages/**/*.{js,ts,jsx,tsx}": [
-      "eslint --fix --cache"
+      "cross-env FILES=$(git diff --name-only --diff-filter=ACMRT | grep --line-buffered -E '\\.(js|jsx|ts|tsx)$') eslint $FILES --fix"
     ],
     "*.{css,scss}": [
       "prettier --write"
