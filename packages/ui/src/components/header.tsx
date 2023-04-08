@@ -1,8 +1,8 @@
 export function Header() {
   return (
-    <header className="flex items-center justify-between bg-purple-500 text-white px-4 py-3">
-      <div className="">
-        <div className="flex items-center">
+    <header className="flex items-center justify-between bg-purple-500 ">
+      <div className="max-w-6xl flex grow items-center justify-between center mx-auto text-white  px-4 py-3">
+        <div className="flex items-center grow">
           <a
             href="/"
             className="font-bold text-lg mr-6 hover:text-purple-700 transition-colors"
