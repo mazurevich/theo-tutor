@@ -1,11 +1,5 @@
-import type {
-  CSSProperties,
-  FC,
-  HTMLAttributes,
-  PropsWithChildren,
-} from "react";
+import { type HTMLAttributes, type PropsWithChildren, forwardRef } from "react";
 import clsx from "clsx";
-import { forwardRef } from "react";
 
 const Sizes = {
   small: "small",
@@ -28,17 +22,15 @@ export type ButtonProps = {
   children?: string;
   size?: Size;
   type?: Type;
-} & HTMLAttributes<HTMLButtonElement>;
+} & Omit<HTMLAttributes<HTMLButtonElement>, "type">;
 
-type CssClass = HTMLAttributes<HTMLButtonElement>["className"];
-
-const SizeClasses: Record<Size, CssClass> = {
+const SizeClasses: Record<Size, string> = {
   [Sizes.small]: "px-2 py-1 text-sm rounded-md",
   [Sizes.medium]: "px-4 py-2 text-base rounded-lg",
   [Sizes.large]: "px-6 py-3 text-lg rounded-xl",
 };
 
-const ColorClasses: Record<Type, CssClass> = {
+const ColorClasses: Record<Type, string> = {
   [Types.primary]:
     "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700",
   [Types.secondary]:
