@@ -1,4 +1,9 @@
-import { type HTMLAttributes, type PropsWithChildren, forwardRef } from "react";
+import {
+  type HTMLAttributes,
+  type PropsWithChildren,
+  forwardRef,
+  type ReactNode,
+} from "react";
 import clsx from "clsx";
 
 const Sizes = {
@@ -19,7 +24,7 @@ const Types = {
 type Type = (typeof Types)[keyof typeof Types];
 
 export type ButtonProps = {
-  children?: string;
+  children?: ReactNode;
   size?: Size;
   type?: Type;
 } & Omit<HTMLAttributes<HTMLButtonElement>, "type">;
@@ -32,13 +37,13 @@ const SizeClasses: Record<Size, string> = {
 
 const ColorClasses: Record<Type, string> = {
   [Types.primary]:
-    "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700",
+    "bg-primary text-secondary hover:bg-primary-hover active:bg-primary-active",
   [Types.secondary]:
-    "bg-gray-500 text-white hover:bg-gray-600 active:bg-gray-700",
+    "bg-secondary text-primary hover:bg-secondary-hover active:bg-secondary-active border border-primary",
   [Types.transparent]:
-    "bg-transparent text-gray-500 hover:text-gray-600 active:text-gray-700",
+    "bg-transparent text-primary hover:text-primary-hover active:text-primary-active",
   [Types.link]:
-    "bg-transparent text-blue-500 hover:text-blue-600 active:text-blue-700 hover:underline",
+    "bg-transparent text-blue-700 hover:text-blue-800 active:text-blue-900 hover:underline",
 };
 
 export const Button = forwardRef<
