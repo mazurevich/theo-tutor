@@ -18,12 +18,14 @@ export const Empty: Story = {
 export const WithName: Story = {
   args: {
     name: "John Doe",
+    size: 56,
   },
 };
 
 export const WithProfilePicture: Story = {
   args: {
     name: "John Doe",
-    profilePicture: "https://i.pravatar.cc/300",
+    src: "https://i.pravatar.cc/300",
+    size: 56,
   },
 };

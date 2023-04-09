@@ -1,20 +1,25 @@
-import { type CSSProperties, type ElementType, useState } from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type CSSProperties,
+  type ElementType,
+  useState,
+} from "react";
 import clsx from "clsx";
 import { UserCircle } from "../../icons";
 
 type UserAvatarProps<T extends ElementType> = {
-  name?: string;
-  profilePicture?: string;
+  name?: string | null;
+  src?: string;
   size?: number;
   className?: string;
   style?: CSSProperties;
   as?: T;
-};
+} & Omit<ComponentPropsWithoutRef<T>, "alt">;
 
 const DEFAULT_ELEMENT = "img";
 
 const getInitials = (name: string) => {
-  const [firstName, lastName] = name.split(" ");
+  const [firstName = "", lastName = ""] = name.split(" ");
   return `${firstName[0]}${lastName ? lastName[0] : ""}`;
 };
 
@@ -25,21 +30,22 @@ export const UserAvatar = <T extends ElementType = typeof DEFAULT_ELEMENT>({
   className,
   style,
   as,
-  profilePicture,
+  src,
   ...rest
 }: UserAvatarProps<T>): JSX.Element => {
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const defaultStyle = {
     width: size,
     height: size,
     ...style,
   };
 
-  if (!name) {
+  if (!name && !src) {
     return <UserCircle className={className} style={defaultStyle} />;
   }
 
-  const initials = getInitials(name);
+  const initials = getInitials(name || "");
   const Component = as || DEFAULT_ELEMENT;
 
   return (
@@ -51,17 +57,22 @@ export const UserAvatar = <T extends ElementType = typeof DEFAULT_ELEMENT>({
           className
         )}
         style={defaultStyle}
-        {...rest}
       >
         {initials}
       </div>
-      {!imageError && profilePicture && (
+      {!imageError && src && (
         <Component
-          src={profilePicture}
-          className={clsx(avatarClasses, "absolute top-0 left-0")}
+          src={src}
+          className={clsx(
+            avatarClasses,
+            "absolute top-0 left-0 transition-opacity duration-150 ease-in-out",
+            imageLoaded ? "opacity-100" : "opacity-0"
+          )}
           style={defaultStyle}
           alt={`${name} avatar`}
           onError={() => setImageError(true)}
+          onLoad={() => setImageLoaded(true)}
+          {...rest}
         />
       )}
     </div>
