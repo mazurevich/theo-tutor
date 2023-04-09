@@ -1,0 +1,12 @@
+{
+  "name": "tailwind-config",
+  "version": "1.0.0",
+  "files": [
+    "shared-config.cjs"
+  ],
+  "main": "shared-config.cjs",
+  "license": "MIT",
+  "dependencies": {
+    "tailwindcss": "^3.2.7"
+  }
+}

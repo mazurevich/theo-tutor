@@ -1,12 +1,14 @@
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { api } from "@/utils/api";
 import React, { type FormEvent, useRef } from "react";
 import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
+import { PopoverMenu, UserAvatar } from "ui";
 
 export const CreatePostWizard = () => {
   const { user } = useUser();
+  const auth = useAuth();
   const ctx = api.useContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,12 +43,27 @@ export const CreatePostWizard = () => {
 
   return (
     <div className="w-ful relative flex grow items-center gap-3">
-      <Image
-        className="h-14 w-14 rounded-full"
-        src={user.profileImageUrl}
-        alt="user profile image"
-        width={56}
-        height={56}
+      <PopoverMenu
+        items={[
+          {
+            id: "sign-out",
+            label: "Sign out",
+            onClick: () => {
+              void auth.signOut();
+            },
+          },
+        ]}
+        menuButton={
+          <UserAvatar
+            name={user.username}
+            size={56}
+            as={Image}
+            height={56}
+            width={56}
+            src={user.profileImageUrl}
+          />
+        }
+        alignment="left"
       />
       <form onSubmit={handleCreatePost} className="flex grow">
         <input

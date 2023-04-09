@@ -51,7 +51,7 @@ export const PopoverMenu: FC<PopoverProps> = ({
         <Menu.Items
           as="ul"
           className={clsx(
-            "absolute mt-2 w-56 origin-top-right divide-y left" +
+            "absolute mt-2 w-56 origin-top-right divide-y left bg-secondary" +
               "divide-gray-700 rounded-md bg-secondary shadow-lg ring-1 ring-primary ring-opacity-0" +
               "focus:outline-none transform opacity-100 scale-100",
             alignmentClasses[alignment]

@@ -125,6 +125,9 @@ importers:
       prisma:
         specifier: ^4.11.0
         version: 4.12.0
+      tailwind-config:
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
       tailwindcss:
         specifier: ^3.2.7
         version: 3.3.1(postcss@8.4.21)(ts-node@10.9.1)
@@ -155,6 +158,12 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.2.6
         version: 0.2.6(prettier@2.8.7)
+
+  packages/tailwind-config:
+    dependencies:
+      tailwindcss:
+        specifier: ^3.2.7
+        version: 3.3.1(postcss@8.4.21)(ts-node@10.9.1)
 
   packages/tsconfig: {}
 
@@ -242,6 +251,9 @@ importers:
       storybook:
         specifier: ^7.0.2
         version: 7.0.2
+      tailwind-config:
+        specifier: workspace:*
+        version: link:../tailwind-config
       tailwindcss:
         specifier: ^3.2.7
         version: 3.3.1(postcss@8.4.21)(ts-node@10.9.1)
