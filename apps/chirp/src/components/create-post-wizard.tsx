@@ -5,6 +5,7 @@ import React, { type FormEvent, useRef } from "react";
 import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
 import { PopoverMenu, UserAvatar } from "ui";
+import { useRouter } from "next/router";
 
 export const CreatePostWizard = () => {
   const { user } = useUser();
@@ -12,6 +13,7 @@ export const CreatePostWizard = () => {
   const ctx = api.useContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: async () => {
@@ -50,6 +52,13 @@ export const CreatePostWizard = () => {
             label: "Sign out",
             onClick: () => {
               void auth.signOut();
+            },
+          },
+          {
+            id: "profile",
+            label: "Profile",
+            onClick: () => {
+              void router.push(`/@${user.username ?? ""}`);
             },
           },
         ]}

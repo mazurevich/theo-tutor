@@ -30,7 +30,7 @@ export const Simple: Story = {
         onClick: (id: string) => console.log(id),
       },
     ],
-    menuButton: <Button type="primary">Menu</Button>,
+    menuButton: <Button variant="primary">Menu</Button>,
   },
 };
 

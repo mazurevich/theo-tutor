@@ -19,4 +19,20 @@ export const profileRouter = createTRPCRouter({
       }
       return filterUserForClient(user);
     }),
+  updateProfile: publicProcedure
+    .input(z.object({ username: z.string().min(1), id: z.string().min(1) }))
+    .mutation(async ({ input }) => {
+      try {
+        const user = await clerkClient.users.updateUser(input.id, {
+          username: input.username,
+        });
+
+        return filterUserForClient(user);
+      } catch (error) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Username is already taken",
+        });
+      }
+    }),
 });
