@@ -51,7 +51,7 @@ export const PopoverMenu: FC<PopoverProps> = ({
         <Menu.Items
           as="ul"
           className={clsx(
-            "absolute mt-2 w-56 origin-top-right divide-y left bg-secondary" +
+            "absolute mt-2 w-56 origin-top-right divide-y left bg-secondary z-20 " +
               "divide-gray-700 rounded-md bg-secondary shadow-lg ring-1 ring-primary ring-opacity-0" +
               "focus:outline-none transform opacity-100 scale-100",
             alignmentClasses[alignment]
@@ -61,7 +61,7 @@ export const PopoverMenu: FC<PopoverProps> = ({
             <Menu.Item key={id} as="li" className="p-1">
               {() => (
                 <Button
-                  type="transparent"
+                  variant="transparent"
                   className="w-full flex hover:bg-primary-hover hover:text-secondary ui-active:bg-primary ui-active:text-secondary active:bg-primary"
                   onClick={() => onClick?.(id)}
                 >

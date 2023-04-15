@@ -21,3 +21,14 @@ model Post {
 
   @@index([authorId], name: "authorId")
 }
+
+model User {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  email String @db.VarChar(255) @unique
+  name String @db.VarChar(255)
+
+  profileImageUrl String @db.VarChar(1023)
+  @@index([email], name: "email")
+}

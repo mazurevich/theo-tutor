@@ -3,7 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "src",
+  "files": [
+    "src",
+    "src/icons/index.ts"
+  ],
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
