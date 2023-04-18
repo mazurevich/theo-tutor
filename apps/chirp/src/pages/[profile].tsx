@@ -143,13 +143,11 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
         ) : (
           <div className="flex items-center">
             <div className="p-6 text-2xl font-bold">@{_username}</div>
-            <Button
-              variant="transparent"
-              className="h-6 w-6 px-0 py-0 text-sky-50"
+            <IconButton
+              icon={<PencilSquare />}
+              className="text-slate-50 hover:text-slate-200"
               onClick={() => setIsEditing(true)}
-            >
-              <PencilSquare className="h-6 w-6 text-sky-50" />
-            </Button>
+            />
           </div>
         )}
         <div className="border-b border-slate-400 "> </div>

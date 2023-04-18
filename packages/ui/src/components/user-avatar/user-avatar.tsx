@@ -65,7 +65,7 @@ export const UserAvatar = <T extends ElementType = typeof DEFAULT_ELEMENT>({
           src={src}
           className={clsx(
             avatarClasses,
-            "absolute top-0 left-0 transition-opacity duration-150 ease-in-out",
+            "absolute top-0 left-0 transition-opacity duration-150 ease-in-out select-none",
             imageLoaded ? "opacity-100" : "opacity-0"
           )}
           style={defaultStyle}
